@@ -1,16 +1,3 @@
-/**
- * Created by K. Suwatchai (Mobizt)
- * 
- * Email: k_suwatchai@hotmail.com
- * 
- * Github: https://github.com/mobizt
- * 
- * Copyright (c) 2020 mobizt
- *
-*/
-
-//This example shows how to use different Firebase Data objects to handle to same streaming path, one for stream connection (database data changes monitoring) and
-//other for store, read, update database operation.
 const int SPEAKER = 23;
 int NOTE_DUR = 100;
 int freq = 2000;
@@ -30,7 +17,7 @@ using namespace std;
 
 
 /* 6. Define the Firebase Data object */
-FirebaseData fbdo;
+FirebaseData fbdo, fbdo1;
 /* Define the FirebaseAuth data for authentication data */
 FirebaseAuth auth;
 /* Define the FirebaseConfig data for config data */
@@ -81,10 +68,10 @@ void setup()
 
   Serial.println("------------------------------------");
   Serial.println("Begin stream 1...");
-  if (!Firebase.beginStream(fbdo2, path + "/speakerState"))
+  if (!Firebase.beginStream(fbdo, path + "/speakerState"))
   {
     Serial.println("FAILED");
-    Serial.println("REASON: " + fbdo2.errorReason());
+    Serial.println("REASON: " + fbdo.errorReason());
     Serial.println();
   }
   else
@@ -108,34 +95,34 @@ void setup()
 void loop()
 {
 
-  if (!Firebase.readStream(fbdo2))
+  if (!Firebase.readStream(fbdo))
   {
     Serial.println("Can't read stream data");
-    Serial.println("REASON: " + fbdo2.errorReason());
+    Serial.println("REASON: " + fbdo.errorReason());
     Serial.println();
   }
 
-  if (fbdo2.streamTimeout())
+  if (fbdo.streamTimeout())
   {
     Serial.println("Stream timeout, resume streaming...");
     Serial.println();
   }
 
-  if (fbdo2.streamAvailable())
+  if (fbdo.streamAvailable())
   {
     Serial.println("------------------------------------");
     Serial.println("Stream Data Available...");
-    Serial.println("STREAM PATH: " + fbdo2.streamPath());
-    Serial.println("EVENT PATH: " + fbdo2.dataPath());
-    Serial.println("DATA TYPE: " + fbdo2.dataType());
-    Serial.println("EVENT TYPE: " + fbdo2.eventType());
+    Serial.println("STREAM PATH: " + fbdo.streamPath());
+    Serial.println("EVENT PATH: " + fbdo.dataPath());
+    Serial.println("DATA TYPE: " + fbdo.dataType());
+    Serial.println("EVENT TYPE: " + fbdo.eventType());
     Serial.print("VALUE: ");
-    printResult(fbdo2);
+    printResult(fbdo);
 
     /*
-    if (fbdo2.dataType() == "blob")
+    if (fbdo.dataType() == "blob")
     {
-      std::vector<uint8_t> blob = fbdo2.blobData();
+      std::vector<uint8_t> blob = fbdo.blobData();
 
       Serial.println();
 
@@ -154,21 +141,21 @@ void loop()
     }
     */
 
-    if (fbdo2.intData() % 3 == 1)
+    if (fbdo.intData() % 3 == 1)
     {
       NOTE_DUR = 100;
       Serial.println("Playing Chopsticks");
       ChopsticksMelody();
     }
 
-    else if (fbdo2.intData() % 3 == 2)
+    else if (fbdo.intData() % 3 == 2)
     {
       NOTE_DUR = 150;
       Serial.println("Playing MSM");
       MSMIntro();
     }
   
-    else if (fbdo2.intData() % 3 == 0)
+    else if (fbdo.intData() % 3 == 0)
     {
       NOTE_DUR = 100;
       Serial.println("Playing Pirates");
@@ -179,7 +166,7 @@ void loop()
     Serial.println();
   }
 
-  /*
+  ///*
   if (millis() - sendDataPrevMillis1 > 15000)
   {
     sendDataPrevMillis1 = millis();
@@ -240,7 +227,7 @@ void loop()
 
     // count1 += 3;
   }
-  */
+  //*/
 }
 
 ////////////////////////////////
