@@ -1,5 +1,5 @@
 const int SPEAKER = 23;
-int NOTE_DUR = 100;
+unsigned long NOTE_DUR = 100;
 int freq = 2000;
 int channel = 0;
 int resolution = 8;
@@ -48,6 +48,7 @@ void tone(byte pin, int freq);
 void noTone(byte pin);
 void decode(string input);
 void parseJSON(FirebaseJson json);
+unsigned long toMS(int tempo);
 
 ////////////////////////////////
 ////////////////////////////////
@@ -151,33 +152,43 @@ void loop()
       Serial.println();
     }
     */
+    int tempo;
 
     if (fbdo.intData() % 3 == 1)
     {
-      NOTE_DUR = 100;
+      tempo = 60;
+      NOTE_DUR = toMS(tempo);
+      Serial.println(NOTE_DUR);
       Serial.println("Playing Chopsticks");
-      ChopsticksMelody();
+      //ChopsticksMelody();
+      Twinkle();
     }
 
     else if (fbdo.intData() % 3 == 2)
     {
-      NOTE_DUR = 150;
+      tempo = 90;
+      NOTE_DUR = toMS(tempo);
+      Serial.println(NOTE_DUR);
       Serial.println("Playing MSM");
-      MSMIntro();
+      //MSMIntro();
+      Twinkle();
     }
   
     else if (fbdo.intData() % 3 == 0)
     {
-      NOTE_DUR = 100;
+      tempo = 120;
+      NOTE_DUR = toMS(tempo);
+      Serial.println(NOTE_DUR);
       Serial.println("Playing Pirates");
-      Pirates();
+      //Pirates();
+      Twinkle();
     }
     
     Serial.println("------------------------------------");
     Serial.println();
   }
 
-  ///*
+  /*
   if (millis() - sendDataPrevMillis1 > 15000)
   {
     sendDataPrevMillis1 = millis();
@@ -337,184 +348,36 @@ void printResult(FirebaseData &data)
 
 /* MUSIC */
 
+unsigned long toMS(int tempo)
+{
+  return (60.0 * 1000.0 / tempo);
+}
+
 void play(int note, int dur)
 {
-  ledcWriteTone(0, note);
-  delay(dur * NOTE_DUR);
+  ledcWriteTone(0, pitchArr[note - 23]);
+  delay(dur * NOTE_DUR * 4 / 5);
   ledcWriteTone(0, 0);
-  delay(dur * NOTE_DUR / 3);
+  delay(dur * NOTE_DUR / 5);
 }
 
-void ChopsticksMelody()
+void Twinkle()
 {
-    play(NOTE_C4, 3); // m1
-    play(NOTE_C4, 3);
-    play(NOTE_C4, 6);
-    delay(NOTE_DUR*2); // m2
-    play(NOTE_C4, 1);
-    play(NOTE_B3, 2);
-    play(NOTE_A3, 1);
-    play(NOTE_B3, 2);
-    play(NOTE_C4, 1);
-    play(NOTE_D4, 3); 
-    play(NOTE_E4, 3); // m3
-    play(NOTE_E4, 3);
-    play(NOTE_E4, 6);
-    delay(NOTE_DUR*2); // m4
-    play(NOTE_E4, 1);
-    play(NOTE_D4, 2);
-    play(NOTE_C4, 1);
-    play(NOTE_D4, 2);
-    play(NOTE_E4, 1);
-    play(NOTE_F4, 3);
-    play(NOTE_G4, 6); // m5
-    play(NOTE_C4, 6);
-    delay(NOTE_DUR*2); // m6
-    play(NOTE_A4, 1);
-    play(NOTE_G4, 2);
-    play(NOTE_F4, 1);
-    play(NOTE_E4, 3);
-    play(NOTE_D4, 3);
-    play(NOTE_C4, 3); // m7
-    // delay(NOTE_DUR*1);
-    play(NOTE_C5, 2);
-    play(NOTE_B4, 1);
-    play(NOTE_A4, 2);
-    play(NOTE_B4, 1);
-    play(NOTE_A4, 2);
-    play(NOTE_G4, 1);
-    play(NOTE_F4, 2);
-    play(NOTE_G4, 1);
-    play(NOTE_F4, 2);
-    play(NOTE_E4, 1);
-    play(NOTE_D4, 3);
-    play(NOTE_G4, 3);
-    
-}
+  play(60, 1);
+  play(60, 1);
+  play(67, 1);
+  play(67, 1);
+  
+  play(69, 1);
+  play(69, 1);
+  play(67, 2);
 
-void MSMIntro()
-{
-  play(NOTE_G5, 2); // M1
-  play(NOTE_GS5, 1);
-  play(NOTE_A5, 1);
-  delay(NOTE_DUR);
-  play(NOTE_GS5, 1);
-  delay(NOTE_DUR*1);
-  play(NOTE_FS5, 1);
-  play(NOTE_G5, 2); // M2
-  play(NOTE_DS5, 1);
-  play(NOTE_E5, 1);
-  delay(NOTE_DUR*1);
-  play(NOTE_G4, 1);
-  play(NOTE_A4, 1);
-  play(NOTE_E5, 1);
-
-  play(NOTE_G5, 2); // M3
-  play(NOTE_GS5, 1);
-  play(NOTE_A5, 1);
-  delay(NOTE_DUR);
-  play(NOTE_GS5, 1);
-  delay(NOTE_DUR*1);
-  play(NOTE_G5, 1);
-  play(NOTE_E6, 2); // M4
-  play(NOTE_B5, 1);
-  play(NOTE_C6, 1);
-  delay(NOTE_DUR*1);
-  play(NOTE_G5, 1);
-  play(NOTE_E5, 1);
-  play(NOTE_D5, 1);
-
-  play(NOTE_G5, 2); // M5
-  play(NOTE_GS5, 1);
-  play(NOTE_A5, 1);
-  delay(NOTE_DUR);
-  play(NOTE_GS5, 1);
-  delay(NOTE_DUR*1);
-  play(NOTE_E5, 1);
-  play(NOTE_FS5, 1); // M6
-  play(NOTE_G5, 1);
-  play(NOTE_DS5, 1);
-  play(NOTE_E5, 1);
-  delay(NOTE_DUR*1);
-  play(NOTE_G4, 1);
-  play(NOTE_A4, 1);
-  play(NOTE_E5, 1);
-
-  play(NOTE_G5, 2); // M7
-  play(NOTE_GS5, 1);
-  play(NOTE_A5, 1);
-  delay(NOTE_DUR);
-  play(NOTE_GS5, 1);
-  delay(NOTE_DUR*1);
-  play(NOTE_G5, 1);
-  play(NOTE_F5, 1); // M8
-  play(NOTE_E5, 1);
-  play(NOTE_D5, 1);
-  play(NOTE_C5, 1);
-  delay(NOTE_DUR*4);
-}
-
-void Pirates()
-{
-  play(NOTE_A3, 1);
-  play(NOTE_C4, 1);
-  play(NOTE_D4, 2); // M1
-  play(NOTE_D4, 2);
-  play(NOTE_D4, 1);
-  play(NOTE_E4, 1);
-  play(NOTE_F4, 2);
-  play(NOTE_F4, 2);
-  play(NOTE_F4, 1);
-  play(NOTE_G4, 1);
-  play(NOTE_E4, 2); // M2
-  play(NOTE_E4, 2);
-  play(NOTE_D4, 1);
-  play(NOTE_C4, 1);
-  play(NOTE_C4, 1);
-  play(NOTE_D4, 3);
-  play(NOTE_A3, 1);
-  play(NOTE_C4, 1);
-  play(NOTE_D4, 2); // M3
-  play(NOTE_D4, 2);
-  play(NOTE_D4, 1);
-  play(NOTE_E4, 1);
-  play(NOTE_F4, 2);
-  play(NOTE_F4, 2);
-  play(NOTE_F4, 1);
-  play(NOTE_G4, 1);
-  play(NOTE_E4, 2); // M2
-  play(NOTE_E4, 2);
-  play(NOTE_D4, 1);
-  play(NOTE_C4, 1);
-  play(NOTE_D4, 4);
-  play(NOTE_A3, 1);
-  play(NOTE_C4, 1);
-  play(NOTE_D4, 2); // M5
-  play(NOTE_D4, 2);
-  play(NOTE_D4, 1);
-  play(NOTE_F4, 1);
-  play(NOTE_G4, 2);
-  play(NOTE_G4, 2);
-  play(NOTE_G4, 1);
-  play(NOTE_A4, 1);
-  play(NOTE_AS4, 2); // M6
-  play(NOTE_AS4, 2);
-  play(NOTE_A4, 1);
-  play(NOTE_G4, 1);
-  play(NOTE_A4, 1);
-  play(NOTE_D4, 3);
-  play(NOTE_D4, 1);
-  play(NOTE_E4, 1);
-  play(NOTE_F4, 2); // M1
-  play(NOTE_F4, 2);
-  play(NOTE_G4, 2);
-  play(NOTE_A4, 1);
-  play(NOTE_D4, 3);
-  play(NOTE_D4, 1);
-  play(NOTE_F4, 1);
-  play(NOTE_E4, 2); // M2
-  play(NOTE_E4, 2);
-  play(NOTE_F4, 1);
-  play(NOTE_D4, 1);
-  play(NOTE_E4, 4); 
+  play(65, 1);
+  play(65, 1);
+  play(64, 1);
+  play(64, 1);
+  
+  play(62, 1);
+  play(62, 1);
+  play(60, 2);
 }
