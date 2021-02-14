@@ -22,11 +22,8 @@ int pitchArr[89] = { NOTE_B0,
                      NOTE_C7, NOTE_CS7, NOTE_D7, NOTE_DS7, NOTE_E7, NOTE_F7, NOTE_FS7, NOTE_G7, NOTE_GS7, NOTE_A7, NOTE_AS7, NOTE_B7,
                      NOTE_C8, NOTE_CS8, NOTE_D8, NOTE_DS8};
 
-#define USER_EMAIL "USER_EMAIL"
-#define USER_PASSWORD "USER_PASSWORD"
 
-
-/* 6. Define the Firebase Data object */
+/* Define the Firebase Data object */
 FirebaseData fbdo;
 /* Define the FirebaseAuth data for authentication data */
 FirebaseAuth auth;
