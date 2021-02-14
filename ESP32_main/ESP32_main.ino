@@ -133,7 +133,7 @@ void loop()
     FirebaseJson &json = music.jsonObject();
     json.get(tempoData, "tempo");
     int tempo = tempoData.intValue;
-    Serial.println(tempo);
+    //Serial.println(tempo);
     NOTE_DUR = toMS(tempo);
     playJSON(music);
 
@@ -316,7 +316,7 @@ void play(int note, double dur)
 
 void playJSON(FirebaseData &data)
 {
-  Serial.println();
+  //Serial.println();
   FirebaseJson &json = data.jsonObject();
   //Print all object data
   //Serial.println("Pretty printed JSON data:");
@@ -324,8 +324,8 @@ void playJSON(FirebaseData &data)
   //json.toString(jsonStr, true);
   //Serial.println(jsonStr);
   //Serial.println();
-  Serial.println("Iterate JSON data:");
-  Serial.println();
+  //Serial.println("Iterate JSON data:");
+  //Serial.println();
   size_t len = json.iteratorBegin();
   //Serial.println(len / 4);
   Serial.println("Playing...");
@@ -334,7 +334,6 @@ void playJSON(FirebaseData &data)
     String keyName = "note" + String(i/4);
     FirebaseJsonData tmpJsonData;
     json.get(tmpJsonData, keyName);
-
     
     //Serial.print(i/4);
     /*Serial.print(", Key: ");
