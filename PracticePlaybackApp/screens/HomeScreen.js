@@ -9,25 +9,25 @@ export default function HomeScreen(props) {
       song1: {
         songName : "song1",
         image :icon,
-        instrument : "cello",
+        concertPitch : "Concert C",
         originalBPM : 120
       },
       song2: {
         songName : "song2",
         image :icon,
-        instrument : "cello",
+        concertPitch : "Concert C",
         originalBPM : 150
       },
       song3: {
         songName : "song3",
         image :icon,
-        instrument : "flute",
+        concertPitch : "Concert D Flat",
         originalBPM : 130
       },
       song4: {
         songName : "song4",
         image :icon,
-        instrument : "clarinet",
+        concertPitch : "Concert B Flat",
         originalBPM : 180
       }
     }
@@ -42,12 +42,13 @@ export default function HomeScreen(props) {
         onPress={() => props.navigation.navigate("PlaySong", {
           image: section[1].image,
           songName : section[0],
-          originalBPM: section[1].originalBPM
+          originalBPM: section[1].originalBPM,
+          concertPitch: section[1].concertPitch
         })} >
           <Song 
           songName = {section[0]}
           image = {section[1].image}
-          instrument = {section[1].instrument}/>
+          concertPitch = {section[1].concertPitch}/>
         </TouchableOpacity>
       )
     })
@@ -67,13 +68,13 @@ export default function HomeScreen(props) {
             
             style ={styles.button}
         >
-           <Text>  Upload A Song </Text>
+           <Text style ={styles.buttonText}>  Upload A Song </Text>
           </TouchableOpacity>
 
         <TouchableOpacity
             onPress= {() => props.navigation.navigate("Profile")}
             style = {styles.button}
-        ><Text> Go To Profile Screen</Text>
+        ><Text style = {styles.buttonText}> Go To Profile Screen</Text>
           </TouchableOpacity>
       </View>
 

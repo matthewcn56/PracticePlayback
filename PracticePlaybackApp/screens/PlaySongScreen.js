@@ -54,7 +54,7 @@ export default function PlaySongScreen(props) {
           onPress={handlePlaySong}
           style = {styles.button}
         >
-          <Text>Play Song At Selected Tempo </Text>
+          <Text style ={styles.buttonText}>Play Song At Selected Tempo </Text>
           </TouchableOpacity>
 
 
