@@ -27,7 +27,7 @@ int pitchArr[89] = { NOTE_B0,
 
 
 /* 6. Define the Firebase Data object */
-FirebaseData fbdo, fbdo1;
+FirebaseData fbdo;
 /* Define the FirebaseAuth data for authentication data */
 FirebaseAuth auth;
 /* Define the FirebaseConfig data for config data */
