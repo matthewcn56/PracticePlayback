@@ -11,7 +11,7 @@ export default function EditProfileScreen(props) {
             style = {styles.button}
             onPress= {() => props.navigation.navigate("Profile")}
         >
-          <Text>Back To Your Profile</Text>
+          <Text style ={styles.buttonText}>Back To Your Profile</Text>
           </TouchableOpacity>
     </View>
   );

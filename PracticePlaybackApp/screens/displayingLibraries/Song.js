@@ -10,7 +10,7 @@ export default function Song(props) {
             </Text>
             <Image source = {/* prob change to URI or decoded base 64 with database*/props.image} style ={styles.thumbnailStyles}/>
             <Text style ={styles.songSubheader}>
-                {"Instrument: " +props.instrument}
+                {"Pitch: " +props.concertPitch}
             </Text>
             
             

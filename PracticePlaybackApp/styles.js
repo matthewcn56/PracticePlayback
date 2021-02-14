@@ -11,7 +11,7 @@ export default StyleSheet.create({
       },
 
       headerText: {
-        fontSize: 30,
+        fontSize: 25,
         fontWeight: "bold",
         marginBottom: 20,
         marginTop: 20
@@ -51,26 +51,34 @@ export default StyleSheet.create({
       },
 
     picker: {
-        height: 50,
+        height: 40,
         width: 300,
-        marginBottom: 200
+        marginBottom: 100
     },
     spacedRow: {
         display: "flex",
         flexDirection: "row"
     },
     libraryScroll: {
-        height: 500
+        height: "45%"
     },
     pageBottom: {
-        marginTop: 40
+        marginTop: 40,
+        display: "flex",
+        justifyContent: "space-evenly",
+        height: "30%"
     },
 
     button: {
         alignItems: "center",
-        backgroundColor: "#b3d0ff",
+        backgroundColor: "#737373",
         padding: 20,
-        borderRadius: 20
+        borderRadius: 20,
+        
+    },
+
+    buttonText: {
+        color: "#ffffff"
     },
 
     imageScreenContainer: {
