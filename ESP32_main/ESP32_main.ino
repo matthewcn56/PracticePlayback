@@ -123,7 +123,9 @@ void loop()
     Serial.println("SONG STREAM PATH: " + song.streamPath());
     Serial.println("TEMPO STREAM PATH: " + tmpo.streamPath());
 
+    Firebase.getString(song, "/currSong");
     String songName = song.stringData();
+    Firebase.getInt(tmpo, "/currTempo");
     int tempo = tmpo.intData();
     Serial.println(songName);
     path = "/songs/" + songName;
