@@ -70,16 +70,19 @@ export default function UploadSongScreen(props) {
 
        
 
-        <Button
-        style = {pageStyles.uploadButton}
+        <TouchableOpacity
+        style = {styles.button}
         onPress= {handleUploadSong}
-        title = "Upload Song To Your Library"
-      />
+        >
+          <Text> Upload Song To Your Library</Text>
+        </TouchableOpacity>
 
-      <Button
+      <TouchableOpacity
         onPress= {() => props.navigation.navigate("SelectImage")}
-        title = "Select a Different Image"
-      />
+        style ={styles.button}
+      >
+          <Text>Select a Different Image</Text>
+      </TouchableOpacity>
 
      
 

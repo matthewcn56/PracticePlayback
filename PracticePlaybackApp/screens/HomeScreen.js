@@ -36,7 +36,10 @@ export default function HomeScreen(props) {
     let songsList = Object.entries(junkData);
     songsList = songsList.map((section, index) => {
       return (
-        <TouchableOpacity key ={index} onPress={() => props.navigation.navigate("PlaySong", {
+        <TouchableOpacity 
+        key ={index} 
+        
+        onPress={() => props.navigation.navigate("PlaySong", {
           image: section[1].image,
           songName : section[0],
           originalBPM: section[1].originalBPM
@@ -52,21 +55,27 @@ export default function HomeScreen(props) {
 
   return (
     <View style={styles.container}>
-      <Text style ={styles.headerText}>Your uploaded Songs</Text>
+      <Text style ={styles.headerText}>Your Uploaded Songs</Text>
       <View style ={styles.libraryScroll}>
         <ScrollView>
           {songsList}
         </ScrollView>
       </View>
-        <Button
+      <View style ={styles.pageBottom}>
+        <TouchableOpacity
             onPress= {() => props.navigation.navigate("UploadSong")}
-            title = "Upload A Song"
-        />
+            
+            style ={styles.button}
+        >
+           <Text>  Upload A Song </Text>
+          </TouchableOpacity>
 
-        <Button
+        <TouchableOpacity
             onPress= {() => props.navigation.navigate("Profile")}
-            title = "Go To Profile Screen"
-        />
+            style = {styles.button}
+        ><Text> Go To Profile Screen</Text>
+          </TouchableOpacity>
+      </View>
 
         
     </View>

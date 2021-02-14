@@ -50,11 +50,12 @@ export default function PlaySongScreen(props) {
           Practice BPM: {tempo} BPM
         </Text>
 
-        <Button 
-          title = "Play Song At Selected Tempo"
+        <TouchableOpacity 
           onPress={handlePlaySong}
-          
-        />
+          style = {styles.button}
+        >
+          <Text>Play Song At Selected Tempo </Text>
+          </TouchableOpacity>
 
 
 

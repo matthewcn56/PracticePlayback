@@ -7,13 +7,15 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
       },
 
       headerText: {
         fontSize: 30,
         fontWeight: "bold",
-        marginBottom: 20
+        marginBottom: 20,
+        marginTop: 20
+
     },
 
       songContainer: {
@@ -59,7 +61,27 @@ export default StyleSheet.create({
     },
     libraryScroll: {
         height: 500
+    },
+    pageBottom: {
+        marginTop: 40
+    },
+
+    button: {
+        alignItems: "center",
+        backgroundColor: "#b3d0ff",
+        padding: 20,
+        borderRadius: 20
+    },
+
+    imageScreenContainer: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        
     }
 
     
+
+
 });

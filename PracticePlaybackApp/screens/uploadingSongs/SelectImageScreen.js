@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, Button, Image, Platform} from 'react-native';
+import { StyleSheet, Text, View, Button, Image, Platform, TouchableOpacity} from 'react-native';
 import * as ImagePicker from "expo-image-picker";
+import styles from "../../styles";
 
 export default function SelectImageScreen(props) {
   const [selectedImage, setSelectedImage]= useState(null);
@@ -30,23 +31,30 @@ export default function SelectImageScreen(props) {
   }, []);
 
   return (
-    <View style={styles.container}>
-      <Text>This is our SelectImageScreen</Text>
+    <View style={styles.imageScreenContainer}>
 
-    <Button
+    <TouchableOpacity
         onPress= {pickImage}
-        title = { selectedImage ? "Select A Different Picture" : "Choose A Picture"}
-      />
+        style ={styles.button}
+      >
+        <Text>{ selectedImage ? "Select A Different Picture" : "Choose A Picture"}</Text>
+        </TouchableOpacity>
       {
         selectedImage && //conditionally render the image and the button to upload with the image
         <View>
-          <Image source = {{uri : selectedImage}} style = {styles.imageStyles}/>
-          <Button
+          <View>
+            <Image source = {{uri : selectedImage}} style = {styles.imageStyles}/>
+          </View>
+          <TouchableOpacity
+          style ={styles.button}
           onPress= {() => props.navigation.navigate("UploadSong", {
             selectedImage: selectedImage
           })}
-          title = "Upload Song with Selected Picture"
-        />
+        >
+          <Text> Upload Song with Selected Picture</Text>
+          </TouchableOpacity>
+
+        
         </View>
         
 
@@ -59,16 +67,3 @@ export default function SelectImageScreen(props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-
-  imageStyles: {
-    width: 300,
-    height: 200
-  }
-});

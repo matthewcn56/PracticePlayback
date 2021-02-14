@@ -1,24 +1,19 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity } from 'react-native';
+import styles from "../../styles";
 
 export default function EditProfileScreen(props) {
   return (
     <View style={styles.container}>
       <Text>This is our EditProfileScreen</Text>
 
-      <Button
+      <TouchableOpacity
+            style = {styles.button}
             onPress= {() => props.navigation.navigate("Profile")}
-            title = "Back To Your Profile"
-        />
+        >
+          <Text>Back To Your Profile</Text>
+          </TouchableOpacity>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
