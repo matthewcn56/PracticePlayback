@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Button, Image, Platform} from 'react-native';
 import * as ImagePicker from "expo-image-picker";
 
 export default function SelectImageScreen(props) {
-  const [attemptAllowCamera, setAttemptAllowCamera] = useState(false);
   const [selectedImage, setSelectedImage]= useState(null);
 
   const pickImage = async () => {
