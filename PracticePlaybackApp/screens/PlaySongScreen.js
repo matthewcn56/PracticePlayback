@@ -1,20 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View, } from 'react-native';
+import { Image, StyleSheet, Text, View, } from 'react-native';
+import styles from "../styles";
 
-export default function HomeScreen() {
+export default function PlaySongScreen(props) {
+  const {image, songName} = props.route.params;
   return (
     <View style={styles.container}>
-      <Text>This is our PlaySongScreen</Text>
+      <Text>Screen for playing {songName}</Text>
+      <Image source = {image} style = {styles.imageStyles}/>
+
 
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

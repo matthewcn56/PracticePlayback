@@ -1,11 +1,58 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button } from 'react-native';
+import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView } from 'react-native';
+import icon from "../assets/icon.png";
+import Song from "./displayingLibraries/Song";
+import styles from "../styles";
 
 export default function HomeScreen(props) {
+    const junkData = {
+      song1: {
+        songName : "song1",
+        image :icon,
+        instrument : "cello"
+      },
+      song2: {
+        songName : "song2",
+        image :icon,
+        instrument : "cello"
+      },
+      song3: {
+        songName : "song3",
+        image :icon,
+        instrument : "flute"
+      },
+      song4: {
+        songName : "song4",
+        image :icon,
+        instrument : "clarinet"
+      }
+    }
+    //map the junk data into a list of songs
+    //TODO: Change into URI, or decode base64 like what Lucas 
+    let songsList = Object.entries(junkData);
+    songsList = songsList.map((section, index) => {
+      return (
+        <TouchableOpacity key ={index} onPress={() => props.navigation.navigate("PlaySong", {
+          image: section[1].image,
+          songName : section[0]
+        })} >
+          <Song 
+          songName = {section[0]}
+          image = {section[1].image}
+          instrument = {section[1].instrument}/>
+        </TouchableOpacity>
+      )
+    })
+    console.log(songsList);
+
   return (
     <View style={styles.container}>
-      <Text>This is our HomeScreen</Text>
-
+      <Text style ={styles.headerText}>Your uploaded Songs</Text>
+      <View style ={styles.libraryScroll}>
+        <ScrollView>
+          {songsList}
+        </ScrollView>
+      </View>
         <Button
             onPress= {() => props.navigation.navigate("UploadSong")}
             title = "Upload A Song"
@@ -16,11 +63,6 @@ export default function HomeScreen(props) {
             title = "Go To Profile Screen"
         />
 
-        <Button
-            onPress= {() => props.navigation.navigate("PlaySong")}
-            title = "Go To Play Song Screen"
-        />
-
         
     </View>
 
@@ -29,11 +71,3 @@ export default function HomeScreen(props) {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
