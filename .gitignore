@@ -1,2 +1,4 @@
 ESP32_main/secrets.h
 PracticePlaybackApp/config/apiKeys.js
+ESP32_main/sample_song.json
+ESP32_main/sample_song_1.json
