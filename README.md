@@ -1,3 +1,5 @@
+[Our Product Pitch](https://www.youtube.com/watch?v=Cj6VHWokxqI "title")
+
 ## Inspiration
 All forms of education were adversely affected by COVID-19. However, few were impacted as heavily as performing arts. From Symphonic Orchestras to elementary school bands, musicians of all skill levels have struggled. Specifically, novice musicians face the unique challenge of trying to learn how to play songs without the in-person guidance of instructors. As musicians ourselves, we sought to find a solution to this problem and create a system that makes practicing easier for young musicians.
 
