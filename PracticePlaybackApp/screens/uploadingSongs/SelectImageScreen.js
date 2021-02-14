@@ -31,7 +31,7 @@ export default function SelectImageScreen(props) {
   }, []);
 
   return (
-    <View style={styles.imageScreenContainer}>
+    <View style={styles.centerContainer}>
 
     <TouchableOpacity
         onPress= {pickImage}
@@ -43,14 +43,17 @@ export default function SelectImageScreen(props) {
         selectedImage && //conditionally render the image and the button to upload with the image
         <View>
           <View style ={{marginBottom: 30}}>
-            <Image source = {{uri : selectedImage}} style = {styles.imageStyles}/>
+            <Image source = {{uri : selectedImage}} style = {styles.selectedImageStyles}/>
           </View>
+
           <TouchableOpacity
           style ={styles.button}
           onPress= {() => props.navigation.navigate("UploadSong", {
             selectedImage: selectedImage
           })}
         >
+          
+  
           <Text style ={styles.buttonText}> Upload Song with Selected Picture</Text>
           </TouchableOpacity>
 
