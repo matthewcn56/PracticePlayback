@@ -44,7 +44,7 @@ void Pirates();
 void tone(byte pin, int freq);
 void noTone(byte pin);
 void decode(string input);
-void parseJSON(FirebaseJson json);
+void parseJSON(FirebaseData &data);
 unsigned long toMS(int tempo);
 
 ////////////////////////////////
@@ -127,28 +127,7 @@ void loop()
     Serial.println("EVENT TYPE: " + fbdo.eventType());
     Serial.print("VALUE: ");
     printResult(fbdo);
-
-    /*
-    if (fbdo.dataType() == "blob")
-    {
-      std::vector<uint8_t> blob = fbdo.blobData();
-
-      Serial.println();
-
-      for (int i = 0; i < blob.size(); i++)
-      {
-        if (i > 0 && i % 16 == 0)
-          Serial.println();
-
-        if (i < 16)
-          Serial.print("0");
-
-        Serial.print(blob[i], HEX);
-        Serial.print(" ");
-      }
-      Serial.println();
-    }
-    */
+    
     int tempo;
 
     if (fbdo.intData() % 3 == 1)
@@ -184,69 +163,6 @@ void loop()
     Serial.println("------------------------------------");
     Serial.println();
   }
-
-  /*
-  if (millis() - sendDataPrevMillis1 > 15000)
-  {
-    sendDataPrevMillis1 = millis();
-
-    //Create demo data
-    uint8_t data[256];
-    for (int i = 0; i < 256; i++)
-      data[i] = i;
-    data[255] = rand();
-
-    Serial.println("------------------------------------");
-
-    Serial.println("Set Blob Data 1...");
-    if (Firebase.setBlob(fbdo1, path + "/Stream/data1", data, sizeof(data)))
-    {
-      Serial.println("PASSED");
-      Serial.println("------------------------------------");
-      Serial.println();
-    }
-    else
-    {
-      Serial.println("FAILED");
-      Serial.println("REASON: " + fbdo1.errorReason());
-      Serial.println("------------------------------------");
-      Serial.println();
-    }
-
-    FirebaseJson json;
-    json.add("data1-1", count1).add("data1-2", count1 + 1).add("data1-3", count1 + 2);
-    Serial.println("------------------------------------");
-    Serial.println("Update Data 1...");
-    if (Firebase.updateNode(fbdo1, path + "/Stream/data1", json))
-    {
-      Serial.println("PASSED");
-      Serial.println("PATH: " + fbdo1.dataPath());
-      Serial.println("TYPE: " + fbdo1.dataType());
-      Serial.print("VALUE: ");
-      printResult(fbdo1);
-      Serial.println("------------------------------------");
-      Serial.println();
-    }
-    else
-    {
-      Serial.println("FAILED");
-      Serial.println("REASON: " + fbdo1.errorReason());
-      Serial.println("------------------------------------");
-      Serial.println();
-    }
-
-    //Stop WiFi client will gain the free memory
-    //This requires more time for the SSL handshake process in the next connection
-    // due to the previous connection was completely stopped.
-    fbdo1.stopWiFiClient();
-
-    Serial.print("Free Heap: ");
-    Serial.println(ESP.getFreeHeap());
-    Serial.println();
-
-    // count1 += 3;
-  }
-  //*/
 }
 
 ////////////////////////////////
@@ -356,6 +272,39 @@ void play(int note, int dur)
   delay(dur * NOTE_DUR * 4 / 5);
   ledcWriteTone(0, 0);
   delay(dur * NOTE_DUR / 5);
+}
+
+void parseJSON(FirebaseData &data)
+{
+  // read json 
+  FirebaseJson &json = data.jsonObject();
+  Serial.println("Pretty printed JSON data:");
+  String jsonStr;
+  json.toString(jsonStr, true);
+  Serial.println(jsonStr);
+  Serial.println();
+  // parse json
+  Serial.println("Iterate JSON data:");
+  Serial.println();
+  size_t len = json.iteratorBegin();
+  String key, value = "";
+  int type = 0;
+  for (size_t i = 0; i < len; i++)
+  {
+    json.iteratorGet(i, type, key, value);
+    Serial.print(i);
+    Serial.print(", ");
+    Serial.print("Type: ");
+    Serial.print(type == FirebaseJson::JSON_OBJECT ? "object" : "array");
+    if (type == FirebaseJson::JSON_OBJECT)
+    {
+      Serial.print(", Key: ");
+      Serial.print(key);
+    }
+    Serial.print(", Value: ");
+    Serial.println(value);
+  }
+  json.iteratorEnd();
 }
 
 void Twinkle()
