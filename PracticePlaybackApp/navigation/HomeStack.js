@@ -33,6 +33,9 @@ export default function HomeStack(props){
 
             <Stack.Screen
                 name = "PlaySong"
+                options = {{
+                    title: "Play A Song"
+                }}
                 component = {PlaySongScreen}
             />
 
