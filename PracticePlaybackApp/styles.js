@@ -9,6 +9,8 @@ export default StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
       },
+    
+    
 
       headerText: {
         fontSize: 25,
@@ -41,6 +43,12 @@ export default StyleSheet.create({
         height: 200
         },
 
+        selectedImageStyles: {
+            marginBottom: 100,
+            width: 300,
+            height: 200
+            },
+
         thumbnailStyles: {
             width: 250,
             height: 150
@@ -59,6 +67,13 @@ export default StyleSheet.create({
         display: "flex",
         flexDirection: "row"
     },
+    input : {
+        width: "60%",
+        borderWidth: 1,
+        borderColor: "black",
+        textAlign: "center"
+    },
+
     libraryScroll: {
         height: "45%"
     },
@@ -81,12 +96,11 @@ export default StyleSheet.create({
         color: "#ffffff"
     },
 
-    imageScreenContainer: {
+    centerContainer: {
         flex: 1,
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        
     }
 
     

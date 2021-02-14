@@ -1,53 +1,48 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { StyleSheet, Text, View, Button, TouchableOpacity, ScrollView } from 'react-native';
-import icon from "../assets/icon.png";
+import icon from "../assets/musicPNG.png";
 import Song from "./displayingLibraries/Song";
 import styles from "../styles";
+import {db} from "../config/Firebase";
 
 export default function HomeScreen(props) {
-    const junkData = {
-      song1: {
-        songName : "song1",
-        image :icon,
-        concertPitch : "Concert C",
-        originalBPM : 120
-      },
-      song2: {
-        songName : "song2",
-        image :icon,
-        concertPitch : "Concert C",
-        originalBPM : 150
-      },
-      song3: {
-        songName : "song3",
-        image :icon,
-        concertPitch : "Concert D Flat",
-        originalBPM : 130
-      },
-      song4: {
-        songName : "song4",
-        image :icon,
-        concertPitch : "Concert B Flat",
-        originalBPM : 180
-      }
-    }
+  const [songs, setSongs] = React.useState({});
+
+  useEffect(() => {
+    db.ref("songs").on('value', (querySnapshot) => {
+      setSongs(querySnapshot.val());
+    })
+  }, []);
+
     //map the junk data into a list of songs
     //TODO: Change into URI, or decode base64 like what Lucas 
-    let songsList = Object.entries(junkData);
+    let songsList = Object.entries(songs);
     songsList = songsList.map((section, index) => {
+      let songImage;
+      let songRef=db.ref("songImages/"+section[0]);
+      // db.child("songImages").child(section[0]).get().then(
+      //   function(snapshot) {
+      //     if (snapshot.exists()) {
+      //       songImage= snpashot.val();
+      //     }
+      //     else {
+      //       console.log("No data available");
+      //     }
+      //   }
+      // )
       return (
         <TouchableOpacity 
         key ={index} 
         
         onPress={() => props.navigation.navigate("PlaySong", {
-          image: section[1].image,
+          image: icon/*section[1].image*/,
           songName : section[0],
-          originalBPM: section[1].originalBPM,
+          originalBPM: section[1].tempo,
           concertPitch: section[1].concertPitch
         })} >
           <Song 
           songName = {section[0]}
-          image = {section[1].image}
+          image = {icon} /*{section[1].image}*/
           concertPitch = {section[1].concertPitch}/>
         </TouchableOpacity>
       )
@@ -71,11 +66,7 @@ export default function HomeScreen(props) {
            <Text style ={styles.buttonText}>  Upload A Song </Text>
           </TouchableOpacity>
 
-        <TouchableOpacity
-            onPress= {() => props.navigation.navigate("Profile")}
-            style = {styles.button}
-        ><Text style = {styles.buttonText}> Go To Profile Screen</Text>
-          </TouchableOpacity>
+        
       </View>
 
         
