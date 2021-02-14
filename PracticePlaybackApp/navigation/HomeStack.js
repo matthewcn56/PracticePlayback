@@ -12,11 +12,17 @@ export default function HomeStack(props){
         <Stack.Navigator initialRouteName = "Home">
             <Stack.Screen
                 name = "Home"
+                options = {{
+                    title: "Home Screen"
+                }}
                 component = {HomeScreen}
             />
 
             <Stack.Screen
                 name = "UploadSong"
+                options = {{
+                    title: "Uploading Song"
+                }}
                 component = {UploadSongStack}
             />
 
@@ -27,6 +33,9 @@ export default function HomeStack(props){
 
             <Stack.Screen
                 name = "PlaySong"
+                options = {{
+                    title: "Play A Song"
+                }}
                 component = {PlaySongScreen}
             />
 

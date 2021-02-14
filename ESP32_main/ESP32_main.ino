@@ -13,6 +13,7 @@ const int ledPin = 22;
 #include <WiFi.h>
 #include <FirebaseESP32.h>
 #include <string>
+#include <sstream>  
 using namespace std;
 
 // index = pitch - 23
@@ -71,6 +72,7 @@ void setup()
   {
     Serial.println("FAILED");
     Serial.println("REASON: " + song.errorReason());
+
     Serial.println();
   }
   else
@@ -112,7 +114,7 @@ void loop()
 
   if (isPlay.streamTimeout())
   {
-    Serial.println("Stream timeout, resume streaming...");
+    Serial.println("Music stream timeout, resume streaming...");
     Serial.println();
   }
   else if (loopNum % 1000 == 0)
@@ -141,6 +143,7 @@ void loop()
     //json.get(tempoData, "tempo");
     json.get(concertPitch, "concertPitch");
     //int tempo = tempoData.intValue;
+
     String tempCP = concertPitch.stringValue;
 
     if ( tempCP == "Gb" )
