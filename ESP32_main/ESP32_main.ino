@@ -6,6 +6,7 @@ double prevEndTime = 0;
 const int freq = 2000;
 const int channel = 0;
 const int resolution = 8;
+const int ledPin = 22;
 
 #include "pitches.h"
 #include "secrets.h"
@@ -78,9 +79,10 @@ void setup()
     Serial.println("------------------------------------");
     Serial.println();
   }
-
+  Firebase.setBool(isPlay, "/isPlay", false);
   ledcSetup(channel, freq, resolution);
   ledcAttachPin(SPEAKER, channel);
+  pinMode(ledPin, OUTPUT);
 }
 
 ////////////////////////////////////////////////////////////////
@@ -167,7 +169,9 @@ void loop()
       transposeVal = 5;
 
     NOTE_DUR = toMS(tempo);
+    digitalWrite(ledPin, HIGH);
     playJSON(music);
+    digitalWrite(ledPin, LOW);
     if (Firebase.setBool(isPlay, "/isPlay", false))
       Serial.println("Done Playing");
     
