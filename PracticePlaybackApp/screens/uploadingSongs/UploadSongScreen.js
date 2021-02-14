@@ -14,7 +14,7 @@ export default function UploadSongScreen(props) {
   const [pitch, setPitch] = useState("Select Concert Pitch");
 
   function handleUploadSong(){
-    /* hardcoded :( */
+    /* hardcoded, can get values from moonlight API call, unable to set up in timeframe */
       const odeToJoy = {
     "concertPitch": "C",
     "tempo": 80,
@@ -54,27 +54,28 @@ export default function UploadSongScreen(props) {
     "note14": [60, 7.0, 8.0]
 };
 
-  const deckTheHalls = {
-    "concertPitch": "Bb",
+  const hotCrossBuns = {
+    "concertPitch": "Eb",
     "tempo": 90,
-    "note1": [57, 0.0, 0.75],
-    "note2": [59, 0.75, 1.0],
-    "note3": [60, 1.0, 1.5],
-    "note4": [57, 1.5, 2.0],
-    "note5": [59, 2.0, 2.75],
-    "note6": [60, 2.75, 3.0],
-    "note7": [62, 3.0, 3.5],
-    "note8": [57, 3.5, 4.0],
-    "note9": [59, 4.0, 4.25],
-    "note10": [60, 4.25, 4.5],
-    "note11": [62, 4.5, 5.0],
-    "note12": [64, 5.0, 5.25],
-    "note13": [66, 5.25, 5.5],
-    "note14": [67, 5.5, 6.0],
-    "note15": [66, 6.0, 6.5],
-    "note16": [64, 6.5, 7.0],
-    "note17": [62, 7.0, 8.0]
-};
+    "note1": [71, 0.0, 1.0],
+    "note2": [69, 1.0, 2.0],
+    "note3": [67, 2.0, 3.0],
+    "note4": [71, 4.0, 5.0],
+    "note5": [69, 5.0, 6.0],
+    "note6": [67, 6.0, 7.0],
+    "note7": [67, 8.0, 8.5],
+    "note8": [67, 8.5, 9.0],
+    "note9": [67, 9.0, 9.5],
+    "note10": [67, 9.5, 10.0],
+    "note11": [69, 10.0, 10.5],
+    "note12": [69, 10.5, 11.0],
+    "note13": [69, 11.0, 11.5],
+    "note14": [69, 11.5, 12.0],
+    "note15": [71, 12.0, 13.0],
+    "note16": [69, 13.0, 14.0],
+    "note17": [67, 14.0, 15.0]
+}
+;
 
 
     //test for invalid arguments
@@ -84,8 +85,8 @@ export default function UploadSongScreen(props) {
       let newSong;
       if (songTitle==="Ode To Joy")
         newSong = odeToJoy;
-      else if (songTitle ==="Deck The Halls")
-        newSong = deckTheHalls;
+      else if (songTitle ==="Hot Cross Buns")
+        newSong = hotCrossBuns;
       else newSong = twinkle;
       let image =selectedImage;
       let updates = {};

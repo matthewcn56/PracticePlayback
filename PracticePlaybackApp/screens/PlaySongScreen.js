@@ -61,6 +61,7 @@ export default function PlaySongScreen(props) {
     let updates = {};
     updates['/currSong'] = songName;
     updates['/currTempo'] = tempo;
+    updates['/isPlay'] = true;
     db.ref().update(updates);
   }
 
