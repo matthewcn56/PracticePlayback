@@ -27,7 +27,7 @@ const int pitchArr[89] = { NOTE_B0,
 
 
 /* Define the Firebase Data object */
-FirebaseData music, song, tmpo;
+FirebaseData music, song, tmpo, isPlay;
 
 String path = "";
 
@@ -66,7 +66,7 @@ void setup()
 
   Serial.println("------------------------------------");
   Serial.println("Begin stream 1...");
-  if (!Firebase.beginStream(song, "/currSong") || !Firebase.beginStream(tmpo, "/currTempo"))
+  if (!Firebase.beginStream(isPlay, "/isPlay"))
   {
     Serial.println("FAILED");
     Serial.println("REASON: " + song.errorReason());
@@ -99,16 +99,16 @@ void loop()
     Serial.print(": Looking to stream;");
   }
 
-  if (!Firebase.readStream(song) || !Firebase.readStream(tmpo))
+  if (!Firebase.readStream(isPlay))
   {
     Serial.println("Can't read stream data");
-    Serial.println("REASON: " + song.errorReason());
+    Serial.println("REASON: " + isPlay.errorReason());
     Serial.println();
   }
   else if (loopNum % 1000 == 0)
     Serial.print(" data being read;");
 
-  if (song.streamTimeout() || tmpo.streamTimeout())
+  if (isPlay.streamTimeout())
   {
     Serial.println("Stream timeout, resume streaming...");
     Serial.println();
@@ -116,12 +116,11 @@ void loop()
   else if (loopNum % 1000 == 0)
     Serial.print(" No timeout;");
 
-  if (song.streamAvailable() && tmpo.streamAvailable())
+  if (isPlay.streamAvailable() && isPlay.boolData())
   {
     Serial.println("------------------------------------");
     Serial.println("Stream Data Available...");
-    Serial.println("SONG STREAM PATH: " + song.streamPath());
-    Serial.println("TEMPO STREAM PATH: " + tmpo.streamPath());
+    Serial.println("ISPLAY STREAM PATH: " + isPlay.streamPath());
 
     Firebase.getString(song, "/currSong");
     String songName = song.stringData();
@@ -133,7 +132,7 @@ void loop()
     FirebaseData music;
     Firebase.getJSON(music, path);
     
-    Serial.println("DATA TYPE: " + music.dataType());
+    //Serial.println("DATA TYPE: " + music.dataType());
     //FirebaseJsonData tempoData, concertPitch;
     FirebaseJsonData concertPitch;
     FirebaseJson &json = music.jsonObject();
@@ -169,6 +168,8 @@ void loop()
 
     NOTE_DUR = toMS(tempo);
     playJSON(music);
+    if (Firebase.setBool(isPlay, "/isPlay", false))
+      Serial.println("Done Playing");
     
     Serial.println("------------------------------------");
     Serial.println();
