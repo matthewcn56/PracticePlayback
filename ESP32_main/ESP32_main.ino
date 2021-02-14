@@ -25,14 +25,6 @@ int pitchArr[89] = { NOTE_B0,
 
 /* Define the Firebase Data object */
 FirebaseData fbdo;
-/* Define the FirebaseAuth data for authentication data */
-FirebaseAuth auth;
-/* Define the FirebaseConfig data for config data */
-FirebaseConfig config;
-
-unsigned long sendDataPrevMillis1;
-
-uint16_t count1;
 
 String path = "";
 
@@ -41,9 +33,6 @@ void play(int note, int dur);
 void MSMIntro();
 void ChopsticksMelody();
 void Pirates();
-void tone(byte pin, int freq);
-void noTone(byte pin);
-void decode(string input);
 void parseJSON(FirebaseData &data);
 unsigned long toMS(int tempo);
 
