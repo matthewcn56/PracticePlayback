@@ -9,22 +9,26 @@ export default function HomeScreen(props) {
       song1: {
         songName : "song1",
         image :icon,
-        instrument : "cello"
+        instrument : "cello",
+        originalBPM : 120
       },
       song2: {
         songName : "song2",
         image :icon,
-        instrument : "cello"
+        instrument : "cello",
+        originalBPM : 150
       },
       song3: {
         songName : "song3",
         image :icon,
-        instrument : "flute"
+        instrument : "flute",
+        originalBPM : 130
       },
       song4: {
         songName : "song4",
         image :icon,
-        instrument : "clarinet"
+        instrument : "clarinet",
+        originalBPM : 180
       }
     }
     //map the junk data into a list of songs
@@ -34,7 +38,8 @@ export default function HomeScreen(props) {
       return (
         <TouchableOpacity key ={index} onPress={() => props.navigation.navigate("PlaySong", {
           image: section[1].image,
-          songName : section[0]
+          songName : section[0],
+          originalBPM: section[1].originalBPM
         })} >
           <Song 
           songName = {section[0]}
