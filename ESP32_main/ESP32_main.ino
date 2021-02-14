@@ -1,9 +1,12 @@
 const int SPEAKER = 23;
 unsigned long NOTE_DUR = 100;
 int transposeVal = 0;
+int loopNum = 0;
+double prevEndTime = 0;
 const int freq = 2000;
 const int channel = 0;
 const int resolution = 8;
+const int ledPin = 22;
 
 #include "pitches.h"
 #include "secrets.h"
@@ -26,14 +29,13 @@ const int pitchArr[89] = { NOTE_B0,
 
 
 /* Define the Firebase Data object */
-FirebaseData music;
+FirebaseData music, song, tmpo, isPlay;
 
 String path = "";
 
 void printResult(FirebaseData &data);
 void play(int note, int dur);
 void playJSON(FirebaseData &data);
-// void countTwoMeas(int tempo);
 unsigned long toMS(int tempo);
 
 ////////////////////////////////////////////////////////////////
@@ -66,10 +68,11 @@ void setup()
 
   Serial.println("------------------------------------");
   Serial.println("Begin stream 1...");
-  if (!Firebase.beginStream(music, path + "/music2"))
+  if (!Firebase.beginStream(isPlay, "/isPlay"))
   {
-    Serial.println("FAILED - music");
-    Serial.println("REASON: " + music.errorReason());
+    Serial.println("FAILED");
+    Serial.println("REASON: " + song.errorReason());
+
     Serial.println();
   }
   else
@@ -78,9 +81,10 @@ void setup()
     Serial.println("------------------------------------");
     Serial.println();
   }
-
+  Firebase.setBool(isPlay, "/isPlay", false);
   ledcSetup(channel, freq, resolution);
   ledcAttachPin(SPEAKER, channel);
+  pinMode(ledPin, OUTPUT);
 }
 
 ////////////////////////////////////////////////////////////////
@@ -92,31 +96,54 @@ void setup()
 
 void loop()
 {
-
-  if (!Firebase.readStream(music))
+  loopNum++;
+  if (loopNum % 1000 == 0)
   {
-    Serial.println("Can't read music stream data");
-    Serial.println("REASON: " + music.errorReason());
-    Serial.println();
-  }  
+    Serial.print(loopNum);
+    Serial.print(": Looking to stream;");
+  }
 
-  if (music.streamTimeout())
+  if (!Firebase.readStream(isPlay))
+  {
+    Serial.println("Can't read stream data");
+    Serial.println("REASON: " + isPlay.errorReason());
+    Serial.println();
+  }
+  else if (loopNum % 1000 == 0)
+    Serial.print(" data being read;");
+
+  if (isPlay.streamTimeout())
   {
     Serial.println("Music stream timeout, resume streaming...");
     Serial.println();
   }
+  else if (loopNum % 1000 == 0)
+    Serial.print(" No timeout;");
 
-  if (music.streamAvailable())
+  if (isPlay.streamAvailable() && isPlay.boolData())
   {
     Serial.println("------------------------------------");
     Serial.println("Stream Data Available...");
-    Serial.println("STREAM PATH: " + music.streamPath());
+    Serial.println("ISPLAY STREAM PATH: " + isPlay.streamPath());
+
+    Firebase.getString(song, "/currSong");
+    String songName = song.stringData();
+    Firebase.getInt(tmpo, "/currTempo");
+    int tempo = tmpo.intData();
+    Serial.println(songName);
+    path = "/songs/" + songName;
+    Serial.println(path);
+    FirebaseData music;
+    Firebase.getJSON(music, path);
     
-    FirebaseJsonData tempoData, concertPitch;
+    //Serial.println("DATA TYPE: " + music.dataType());
+    //FirebaseJsonData tempoData, concertPitch;
+    FirebaseJsonData concertPitch;
     FirebaseJson &json = music.jsonObject();
-    json.get(tempoData, "tempo");
+    //json.get(tempoData, "tempo");
     json.get(concertPitch, "concertPitch");
-    int tempo = tempoData.intValue;
+    //int tempo = tempoData.intValue;
+
     String tempCP = concertPitch.stringValue;
 
     if ( tempCP == "Gb" )
@@ -145,11 +172,17 @@ void loop()
       transposeVal = 5;
 
     NOTE_DUR = toMS(tempo);
+    digitalWrite(ledPin, HIGH);
     playJSON(music);
+    digitalWrite(ledPin, LOW);
+    if (Firebase.setBool(isPlay, "/isPlay", false))
+      Serial.println("Done Playing");
     
     Serial.println("------------------------------------");
     Serial.println();
   }
+  else if (loopNum % 1000 == 0)
+    Serial.println(" Stream unavailable!");
 }
 
 ////////////////////////////////////////////////////////////////
@@ -182,16 +215,24 @@ void playJSON(FirebaseData &data)
 {
   FirebaseJson &json = data.jsonObject();
   size_t len = json.iteratorBegin();
-  // Serial.println(len / 4);
+  Serial.println(len / 4);
+
+  for (int i = 0; i < 8; i++)
+    play(84, 1.0);
+  
   Serial.println("Playing...");
+  prevEndTime = 0;
   for (size_t i = 4; i <= len; i+=4)
   {
     String keyName = "note" + String(i/4);
     FirebaseJsonData tmpJsonData;
+    //Serial.print("before get; ");
     json.get(tmpJsonData, keyName);
+    //Serial.print("after get; ");
     
+    Serial.print(keyName);
+    Serial.print(": ");
     /*
-    Serial.print(i/4);
     Serial.print(", Key: ");
     Serial.print(keyName);
     Serial.print(", Data type: " + tmpJsonData.type);
@@ -204,12 +245,19 @@ void playJSON(FirebaseData &data)
     //Serial.print(" - Pitch: ");
     tmpArr.get(tmpJsonData, 0);
     int pitch = tmpJsonData.intValue;
+    Serial.println(pitch);
     tmpArr.get(tmpJsonData, 1);
     double startTime = tmpJsonData.doubleValue;
     tmpArr.get(tmpJsonData, 2);
     double endTime = tmpJsonData.doubleValue;
+    
+    double restTime = startTime - prevEndTime;
+    delay(restTime * NOTE_DUR);
+    
     double diff = endTime - startTime;
     play(pitch, diff);
+
+    prevEndTime = endTime;
 
     /*
     json.iteratorGet(i, type, key, value);
@@ -221,6 +269,8 @@ void playJSON(FirebaseData &data)
     */
   }
   json.iteratorEnd();
+  Serial.println("Song ended!");
+  
 }
 
 ////////////////////////////////////////////////////////////////
